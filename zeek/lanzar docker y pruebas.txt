@@ -1,0 +1,14 @@
+docker run --rm -it --name zeek-live `
+  --cap-add=NET_ADMIN --cap-add=NET_RAW `
+  -v C:\tfg\zeek\scripts:/scripts `
+  -v C:\tfg\zeek\pcaps:/pcaps `
+  -v C:\tfg\zeek\logs:/logs `
+  zeek/zeek:lts bash
+
+
+
+docker exec -it zeek-live bash
+
+
+
+bash /scripts/run_live_zeek.sh /pcaps/ataque_modbus.pcap

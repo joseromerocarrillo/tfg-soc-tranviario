@@ -1,0 +1,10 @@
+docker run --rm `
+  --name suricata-ids `
+  -v C:\tfg\suricata\rules:/etc/suricata/rules/custom `
+  -v C:\tfg\suricata\logs:/var/log/suricata `
+  -v C:\tfg\suricata\pcaps:/pcaps `
+  -v C:\tfg\suricata\suricata-minimal.yaml:/etc/suricata/suricata.yaml `
+  jasonish/suricata:latest `
+  -r /pcaps/trafico_legitimo.pcapng `
+  -S /etc/suricata/rules/custom/lateral_movement.rules `
+  -l /var/log/suricata

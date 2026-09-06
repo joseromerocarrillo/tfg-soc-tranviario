@@ -1,0 +1,57 @@
+# ====================================================================
+#  Reglas Suricata — Casos 5b (DPI), 6 (escaneo) y 7 (fuerza bruta SSH)
+#  DETECCIÓN SOBRE TRÁFICO EN DIRECTO: el sensor escucha la interfaz veth
+#  sobre la que se reinyecta el tráfico con tcpreplay (y, en producción,
+#  el tráfico real en el punto de agregación).
+#
+#  Variables (suricata.yaml -> vars/address-groups):
+#    HOME_NET    : red(es) supervisada(s).
+#    SSH_TARGETS : alcance del Caso 7. En este TFG: [192.168.16.0/24]
+#                  (subred de billetaje). Escalable a $HOME_NET (red completa)
+#                  sin tocar las reglas.
+#
+#  Requisitos de configuración (suricata.yaml):
+#    - app-layer.protocols.{modbus,ssh,tls,http,rdp,...}.enabled: yes
+#    - Para detectar un protocolo FUERA de su puerto estándar, no limitar el
+#      sondeo a las detection-ports por defecto (habilitar sondeo amplio).
+#    - encryption-handling: full   (inspección de metadatos sobre TLS).
+#  SID en rango local (>= 5500000).
+# ====================================================================
+
+# --------------------------------------------------------------------
+#  CASO 5b — DPI: política puerto<->protocolo (GENÉRICA)
+#  Derivada del inventario de servicios observado en el tráfico validado;
+#  alerta ante CUALQUIER discordancia, en cualquier puerto y protocolo.
+# --------------------------------------------------------------------
+# (a) Protocolo inesperado en un puerto de servicio conocido:
+alert tcp any any -> $HOME_NET 502  (msg:"OT-DPI protocolo distinto de Modbus en puerto 502"; flow:to_server; app-layer-protocol:!modbus,final; classtype:policy-violation; sid:5500001; rev:1;)
+alert tcp any any -> $HOME_NET 80   (msg:"OT-DPI protocolo distinto de HTTP en puerto 80";    flow:to_server; app-layer-protocol:!http,final;   classtype:policy-violation; sid:5500002; rev:1;)
+alert tcp any any -> $HOME_NET 443  (msg:"OT-DPI protocolo distinto de TLS en puerto 443";     flow:to_server; app-layer-protocol:!tls,final;    classtype:policy-violation; sid:5500003; rev:1;)
+alert tcp any any -> $HOME_NET 22   (msg:"OT-DPI protocolo distinto de SSH en puerto 22";      flow:to_server; app-layer-protocol:!ssh,final;    classtype:policy-violation; sid:5500004; rev:1;)
+alert tcp any any -> $HOME_NET 3389 (msg:"OT-DPI protocolo distinto de RDP en puerto 3389";    flow:to_server; app-layer-protocol:!rdp,final;    classtype:policy-violation; sid:5500005; rev:1;)
+
+# (b) Protocolo sensible FUERA de su puerto (requiere sondeo amplio):
+alert tcp any any -> $HOME_NET !502 (msg:"OT-DPI Modbus fuera del puerto 502"; flow:to_server; app-layer-protocol:modbus; classtype:policy-violation; sid:5500006; rev:1;)
+
+# (c) Detección de protocolo fallida en puertos de servicio: posible túnel/ofuscación:
+alert tcp any any -> $HOME_NET [21,22,80,443,502,3389,5900] (msg:"OT-DPI deteccion de protocolo fallida (posible tunel/ofuscacion)"; flow:to_server; app-layer-protocol:failed; classtype:policy-violation; sid:5500008; rev:1;)
+
+# (d) Complemento: evento nativo de discordancia de protocolo entre direcciones:
+alert tcp any any -> $HOME_NET any (msg:"OT-DPI discordancia de protocolo en ambos sentidos"; app-layer-event:applayer_mismatch_protocol_both_directions; classtype:policy-violation; sid:5500009; rev:1;)
+
+# --------------------------------------------------------------------
+#  CASO 6 — Escaneo de activos y servicios
+#  Se excluye TCP/22 para evitar solapamiento con el Caso 7 SSH.
+# --------------------------------------------------------------------
+
+alert tcp any any -> $HOME_NET !22 (msg:"OT-SCAN posible escaneo vertical TCP SYN"; flags:S; ack:0; flow:stateless; detection_filter:track by_dst, count 15, seconds 60; classtype:attempted-recon; sid:5500010; rev:3;)
+
+alert tcp any any -> $HOME_NET !22 (msg:"OT-SCAN barrido SYN desde un origen (>=30/60s)"; flags:S; ack:0; flow:stateless; threshold:type threshold, track by_src, count 30, seconds 60; classtype:attempted-recon; sid:5500011; rev:2;)
+
+# --------------------------------------------------------------------
+#  CASO 7 — Fuerza bruta SSH
+# --------------------------------------------------------------------
+
+alert tcp any any -> $SSH_TARGETS 22 (msg:"OT-SSH conexiones SSH repetidas desde un origen (posible fuerza bruta)"; flags:S; ack:0; flow:stateless; detection_filter:track by_src, count 5, seconds 60; classtype:attempted-admin; sid:5500020; rev:3;)
+
+alert tcp any any -> $SSH_TARGETS any (msg:"OT-SSH sesiones SSH repetidas desde un origen (posible fuerza bruta)"; flow:to_server,established; app-layer-protocol:ssh; detection_filter:track by_src, count 5, seconds 60; classtype:attempted-admin; sid:5500021; rev:2;)

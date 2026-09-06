@@ -1,0 +1,97 @@
+﻿src_ip,dst_ip,function_code,function_name,table_type,start_address,end_address,quantity,count
+192.168.5.102,192.168.12.132,3,Read Holding Registers,holding_registers,100,102,3,1364
+192.168.5.102,192.168.12.35,3,Read Holding Registers,holding_registers,100,101,2,75627
+192.168.5.102,192.168.12.41,3,Read Holding Registers,holding_registers,324,326,3,39652
+192.168.5.102,192.168.12.41,3,Read Holding Registers,holding_registers,100,121,22,39652
+192.168.5.102,192.168.12.20,3,Read Holding Registers,holding_registers,100,120,21,1365
+192.168.5.102,192.168.12.73,2,Read Discrete Inputs,discrete_inputs,10215,10216,2,37853
+192.168.5.102,192.168.12.49,3,Read Holding Registers,holding_registers,60,106,47,17938
+192.168.5.102,192.168.12.40,3,Read Holding Registers,holding_registers,99,200,102,2
+192.168.5.102,192.168.12.73,2,Read Discrete Inputs,discrete_inputs,11040,11041,2,37852
+192.168.5.102,192.168.12.73,2,Read Discrete Inputs,discrete_inputs,10200,10207,8,37853
+192.168.5.102,192.168.12.71,2,Read Discrete Inputs,discrete_inputs,10200,10207,8,82802
+192.168.5.102,192.168.12.148,3,Read Holding Registers,holding_registers,100,113,14,2
+192.168.5.102,192.168.12.43,3,Read Holding Registers,holding_registers,102,116,15,82807
+192.168.5.102,192.168.12.72,1,Read Coils,coils,30,31,2,82787
+192.168.5.102,192.168.12.72,2,Read Discrete Inputs,discrete_inputs,12005,12007,3,82801
+192.168.5.102,192.168.12.43,3,Read Holding Registers,holding_registers,324,324,1,82805
+192.168.5.102,192.168.5.1,1,Read Coils,coils,0,100,101,2
+192.168.5.102,192.168.12.71,2,Read Discrete Inputs,discrete_inputs,11040,11041,2,82800
+192.168.5.102,192.168.12.29,3,Read Holding Registers,holding_registers,61,165,105,81386
+192.168.5.102,192.168.12.46,3,Read Holding Registers,holding_registers,324,400,77,82807
+192.168.5.102,192.168.12.60,3,Read Holding Registers,holding_registers,8016,8016,1,82806
+192.168.5.102,192.168.12.73,2,Read Discrete Inputs,discrete_inputs,10000,10001,2,37853
+192.168.5.102,192.168.12.131,3,Read Holding Registers,holding_registers,324,324,1,76984
+192.168.5.102,192.168.12.23,3,Read Holding Registers,holding_registers,102,116,15,37853
+192.168.5.102,192.168.12.30,3,Read Holding Registers,holding_registers,8072,8072,1,2840
+192.168.5.102,192.168.12.46,3,Read Holding Registers,holding_registers,100,102,3,82807
+192.168.5.102,192.168.12.36,3,Read Holding Registers,holding_registers,100,102,3,1364
+192.168.5.102,192.168.12.35,3,Read Holding Registers,holding_registers,324,324,1,75623
+192.168.5.102,192.168.12.72,2,Read Discrete Inputs,discrete_inputs,11030,11037,8,82686
+192.168.5.102,192.168.12.25,3,Read Holding Registers,holding_registers,324,324,1,82746
+192.168.5.102,192.168.12.33,3,Read Holding Registers,holding_registers,102,116,15,75513
+192.168.5.102,192.168.12.60,3,Read Holding Registers,holding_registers,60,104,45,82807
+192.168.5.102,192.168.12.26,3,Read Holding Registers,holding_registers,324,400,77,81385
+192.168.5.102,192.168.12.121,3,Read Holding Registers,holding_registers,100,102,3,81386
+192.168.5.102,192.168.12.72,2,Read Discrete Inputs,discrete_inputs,10000,10001,2,82727
+192.168.5.102,192.168.12.45,3,Read Holding Registers,holding_registers,324,400,77,2
+192.168.5.102,192.168.12.24,3,Read Holding Registers,holding_registers,102,116,15,3
+192.168.5.102,192.168.5.5,1,Read Coils,coils,3,3,1,2
+192.168.5.102,192.168.5.8,1,Read Coils,coils,3,3,1,2
+192.168.5.102,192.168.12.73,2,Read Discrete Inputs,discrete_inputs,12005,12007,3,37852
+192.168.5.102,192.168.12.34,3,Read Holding Registers,holding_registers,102,116,15,74151
+192.168.5.102,192.168.5.3,1,Read Coils,coils,3,3,1,2
+192.168.5.102,192.168.12.121,3,Read Holding Registers,holding_registers,324,333,10,81532
+192.168.5.102,192.168.12.24,3,Read Holding Registers,holding_registers,324,324,1,1
+192.168.5.102,192.168.12.73,2,Read Discrete Inputs,discrete_inputs,11030,11037,8,37852
+192.168.5.102,192.168.12.20,3,Read Holding Registers,holding_registers,324,326,3,1361
+192.168.5.102,192.168.12.26,3,Read Holding Registers,holding_registers,100,102,3,81386
+192.168.5.102,192.168.12.71,2,Read Discrete Inputs,discrete_inputs,12005,12007,3,82801
+192.168.5.102,192.168.12.25,3,Read Holding Registers,holding_registers,100,101,2,82748
+192.168.5.102,192.168.5.6,1,Read Coils,coils,3,3,1,2
+192.168.5.102,192.168.5.10,1,Read Coils,coils,3,3,1,2
+192.168.5.102,192.168.12.29,3,Read Holding Registers,holding_registers,324,324,1,81384
+192.168.5.102,192.168.12.122,3,Read Holding Registers,holding_registers,324,324,1,795
+192.168.5.102,192.168.12.14,3,Read Holding Registers,holding_registers,324,400,77,2
+192.168.5.102,192.168.12.121,3,Read Holding Registers,holding_registers,324,324,1,81385
+192.168.5.102,192.168.12.73,2,Read Discrete Inputs,discrete_inputs,11020,11029,10,37853
+192.168.5.102,192.168.12.71,1,Read Coils,coils,30,31,2,82800
+192.168.5.102,192.168.5.7,1,Read Coils,coils,3,3,1,2
+192.168.5.102,192.168.12.149,3,Read Holding Registers,holding_registers,100,113,14,2
+192.168.5.102,192.168.12.34,3,Read Holding Registers,holding_registers,324,324,1,74150
+192.168.5.102,192.168.12.45,3,Read Holding Registers,holding_registers,100,101,2,2
+192.168.5.102,192.168.12.149,3,Read Holding Registers,holding_registers,324,325,2,2
+192.168.5.102,192.168.12.71,2,Read Discrete Inputs,discrete_inputs,11020,11029,10,82802
+192.168.5.102,192.168.12.23,3,Read Holding Registers,holding_registers,324,324,1,37852
+192.168.5.102,192.168.12.143,3,Read Holding Registers,holding_registers,324,326,3,2
+192.168.5.102,192.168.12.22,3,Read Holding Registers,holding_registers,324,326,3,1359
+192.168.5.102,192.168.12.33,3,Read Holding Registers,holding_registers,324,324,1,75510
+192.168.5.102,192.168.12.143,3,Read Holding Registers,holding_registers,100,106,7,2
+192.168.5.102,192.168.12.71,2,Read Discrete Inputs,discrete_inputs,10215,10216,2,82803
+192.168.5.102,192.168.12.72,2,Read Discrete Inputs,discrete_inputs,11040,11041,2,82702
+192.168.5.102,192.168.5.9,1,Read Coils,coils,3,3,1,2
+192.168.5.102,192.168.12.36,3,Read Holding Registers,holding_registers,324,400,77,1360
+192.168.5.102,192.168.12.142,3,Read Holding Registers,holding_registers,324,324,1,2
+192.168.5.102,192.168.12.122,3,Read Holding Registers,holding_registers,100,102,3,800
+192.168.5.102,192.168.12.31,3,Read Holding Registers,holding_registers,324,326,3,1
+192.168.5.102,192.168.12.39,3,Read Holding Registers,holding_registers,324,324,1,76984
+192.168.5.102,192.168.12.71,2,Read Discrete Inputs,discrete_inputs,11030,11037,8,82801
+192.168.5.102,192.168.12.73,1,Read Coils,coils,30,31,2,37853
+192.168.5.102,192.168.12.142,3,Read Holding Registers,holding_registers,100,102,3,2
+192.168.5.102,192.168.5.2,1,Read Coils,coils,3,3,1,1
+192.168.5.102,192.168.12.60,3,Read Holding Registers,holding_registers,1669,1676,8,82806
+192.168.5.102,192.168.12.72,2,Read Discrete Inputs,discrete_inputs,10215,10216,2,82710
+192.168.5.102,192.168.12.72,2,Read Discrete Inputs,discrete_inputs,10200,10207,8,82755
+192.168.5.102,192.168.12.131,3,Read Holding Registers,holding_registers,100,102,3,76989
+192.168.5.102,192.168.12.39,3,Read Holding Registers,holding_registers,60,106,47,76989
+192.168.5.102,192.168.12.71,2,Read Discrete Inputs,discrete_inputs,10000,10001,2,82802
+192.168.5.102,192.168.12.141,3,Read Holding Registers,holding_registers,100,102,3,2
+192.168.5.102,192.168.12.132,3,Read Holding Registers,holding_registers,324,324,1,1361
+192.168.5.102,192.168.5.4,1,Read Coils,coils,3,3,1,2
+192.168.5.102,192.168.12.60,3,Read Holding Registers,holding_registers,324,324,1,82805
+192.168.5.102,192.168.12.72,2,Read Discrete Inputs,discrete_inputs,11020,11029,10,82678
+192.168.5.102,192.168.12.49,3,Read Holding Registers,holding_registers,324,324,1,100681
+192.168.5.102,192.168.12.31,3,Read Holding Registers,holding_registers,100,121,22,2
+192.168.5.102,192.168.12.14,3,Read Holding Registers,holding_registers,100,101,2,2
+192.168.5.102,192.168.12.21,3,Read Holding Registers,holding_registers,100,122,23,3
+192.168.5.102,192.168.12.22,3,Read Holding Registers,holding_registers,100,120,21,1365

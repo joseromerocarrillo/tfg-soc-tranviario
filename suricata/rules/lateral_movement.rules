@@ -1,0 +1,11 @@
+# lateral_movement.rules
+#
+# Detecta intentos de acceso desde ofimática hacia servicios específicos de SCADA.
+# Se eliminan reglas catch-all sobre cualquier protocolo/puerto porque el tráfico
+# capturado mediante port mirroring pre-firewall puede contener tráfico inter-subred
+# que el propio firewall bloquea en producción, generando falsos positivos.
+
+alert tcp 192.168.21.0/24 any -> 192.168.2.0/24 445 (msg:"LATERAL MOVEMENT SMB Ofimatica hacia SCADA"; flow:to_server; sid:9000002; rev:2; classtype:attempted-admin;)
+alert tcp 192.168.21.0/24 any -> 192.168.2.0/24 1433 (msg:"LATERAL MOVEMENT SQL Server Ofimatica hacia SCADA"; flow:to_server; sid:9000003; rev:2; classtype:attempted-admin;)
+alert tcp 192.168.21.0/24 any -> 192.168.2.0/24 502 (msg:"LATERAL MOVEMENT Modbus Ofimatica hacia SCADA"; flow:to_server; sid:9000004; rev:2; classtype:attempted-admin;)
+alert tcp 192.168.21.0/24 any -> 192.168.2.0/24 3389 (msg:"LATERAL MOVEMENT RDP Ofimatica hacia SCADA"; flow:to_server; sid:9000005; rev:1; classtype:attempted-admin;)

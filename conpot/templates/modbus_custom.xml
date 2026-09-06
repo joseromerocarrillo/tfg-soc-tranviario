@@ -1,0 +1,9 @@
+<!-- C:\tfg\conpot\templates\modbus_custom.xml (fragmento del slave) -->
+<slave id="1">
+  <coils>
+    <block name="a"><startAddress>0</startAddress><size>100</size></block>
+  </coils>
+  <holding_registers>
+    <block name="b"><startAddress>0</startAddress><size>100</size></block>
+  </holding_registers>
+</slave>
