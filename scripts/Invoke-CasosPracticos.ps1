@@ -72,7 +72,16 @@ $CFG = @{
     # Auto-arranque del lab (preflight). Fuente de verdad preferida: docker-compose.yml.
     # Si ComposeFile queda vacio se autodetecta en ComposeSearchDirs.
     ComposeFile       = ""
-    ComposeSearchDirs = @($PSScriptRoot, "C:\tfg", "C:\tfg\docker", "C:\tfg\lab")
+    # Incluye tambien la raiz del repositorio y su carpeta docker.
+    RepoRoot          = Split-Path -Parent $PSScriptRoot
+    ComposeSearchDirs = @(
+        $PSScriptRoot,
+        (Split-Path -Parent $PSScriptRoot),
+        (Join-Path (Split-Path -Parent $PSScriptRoot) "docker"),
+        "C:\tfg",
+        "C:\tfg\docker",
+        "C:\tfg\lab"
+    )
 
     # eve.json en el host (para verificacion local de casos de red)
     EvePath       = "C:\tfg\suricata\logs\eve.json"

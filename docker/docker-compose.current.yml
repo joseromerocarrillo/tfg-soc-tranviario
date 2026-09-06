@@ -1,0 +1,131 @@
+name: tfg-soc-lab
+
+services:
+  suricata-live:
+    image: jasonish/suricata:latest
+    container_name: suricata-live
+    restart: "no"
+
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+      - SYS_NICE
+
+    networks:
+      - suricata-lab
+
+    volumes:
+      - type: bind
+        source: C:/tfg/suricata/rules
+        target: /etc/suricata/rules
+      - type: bind
+        source: C:/tfg/suricata/config/suricata.yaml
+        target: /etc/suricata/suricata.yaml
+      - type: bind
+        source: C:/tfg/suricata/logs
+        target: /var/log/suricata
+
+    command:
+      - -c
+      - /etc/suricata/suricata.yaml
+      - -i
+      - eth0
+      - -l
+      - /var/log/suricata
+      - -k
+      - none
+
+    logging:
+      driver: json-file
+
+
+  tcpreplay-sender:
+    image: alpine:3.20
+    container_name: tcpreplay-sender
+    restart: "no"
+
+    stdin_open: true
+    tty: true
+
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+
+    networks:
+      - suricata-lab
+
+    volumes:
+      - type: bind
+        source: C:/tfg/pcaps
+        target: /pcaps
+
+    command:
+      - sh
+
+    logging:
+      driver: json-file
+
+
+  zeek-live:
+    image: zeek/zeek:8.2.1
+    container_name: zeek-live
+    restart: "no"
+
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+
+    networks:
+      - suricata-lab
+
+    volumes:
+      - type: bind
+        source: C:/tfg/zeek/logs
+        target: /logs
+      - type: bind
+        source: C:/tfg/zeek/scripts
+        target: /opt/zeek/share/zeek/site/tfg
+        read_only: true
+
+    command:
+      - sh
+      - -c
+      - >-
+        cd /logs &&
+        exec /usr/local/zeek/bin/zeek -C -i eth0
+        -e 'redef LogAscii::use_json=T; redef Log::flush_interval=100msec; redef tcp_inactivity_timeout=5sec; redef tcp_connection_linger=1sec;'
+        /opt/zeek/share/zeek/site/tfg/modbus_whitelist.zeek
+
+    logging:
+      driver: json-file
+
+
+  conpot-scada:
+    image: honeynet/conpot:latest
+    container_name: conpot-scada
+    restart: "no"
+
+    # El contenedor activo original utiliza la red bridge por defecto,
+    # no la red suricata-lab.
+    network_mode: bridge
+
+    ports:
+      - "502:5020"
+      - "8080:8800"
+
+    # Se conserva el driver syslog observado en el contenedor activo.
+    logging:
+      driver: syslog
+      options:
+        syslog-address: "udp://${WAZUH_MANAGER_IP:-192.168.56.10}:514"
+        tag: "conpot"
+
+
+networks:
+  suricata-lab:
+    name: suricata-lab
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+          gateway: 172.20.0.1
