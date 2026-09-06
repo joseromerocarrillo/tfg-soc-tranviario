@@ -34,3 +34,12 @@ __pycache__/
 *.pyc
 .DS_Store
 Thumbs.db
+
+# Capturas: excluir por defecto
+*.pcap
+*.pcapng
+*.pcap.gz
+*.pcapng.gz
+
+# Excepción: PCAP sintéticos generados específicamente para el laboratorio
+!pcaps-synthetic/*.pcap
