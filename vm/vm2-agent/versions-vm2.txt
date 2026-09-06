@@ -1,0 +1,71 @@
+=== OS ===
+PRETTY_NAME="Ubuntu 22.04.5 LTS"
+NAME="Ubuntu"
+VERSION_ID="22.04"
+VERSION="22.04.5 LTS (Jammy Jellyfish)"
+VERSION_CODENAME=jammy
+ID=ubuntu
+ID_LIKE=debian
+HOME_URL="https://www.ubuntu.com/"
+SUPPORT_URL="https://help.ubuntu.com/"
+BUG_REPORT_URL="https://bugs.launchpad.net/ubuntu/"
+PRIVACY_POLICY_URL="https://www.ubuntu.com/legal/terms-and-policies/privacy-policy"
+UBUNTU_CODENAME=jammy
+
+=== HOSTNAME ===
+wazuhagents
+
+=== WAZUH AGENT ===
+WAZUH_VERSION="v4.14.5"
+WAZUH_REVISION="rc1"
+WAZUH_TYPE="agent"
+
+=== PACKAGES ===
+ii  openssh-server                         1:8.9p1-3ubuntu0.15                     amd64        secure shell (SSH) server, for secure access from remote machines
+ii  vsftpd                                 3.0.5-0ubuntu1.1                        amd64        lightweight, efficient FTP server written for security
+ii  wazuh-agent                            4.14.5-1                                amd64        Wazuh agent
+
+=== SERVICES ===
+enabled
+active
+enabled
+active
+enabled
+active
+
+=== NETWORK ===
+lo               UNKNOWN        127.0.0.1/8 ::1/128 
+enp0s3           UP             10.0.2.15/24 metric 100 fd17:625c:f037:2:a00:27ff:fecb:4876/64 fe80::a00:27ff:fecb:4876/64 
+enp0s8           UP             192.168.56.20/24 fe80::a00:27ff:fece:7d1b/64 
+docker0          DOWN           172.17.0.1/16 
+br-5719439af595  UP             172.19.0.1/16 fe80::c47a:87ff:fee4:7b/64 
+br-5e1126a58415  DOWN           172.25.0.1/16 
+br-6334de7fd516  DOWN           172.18.0.1/16 
+br-888d71345d38  DOWN           172.24.0.1/16 
+br-bb3a1a505a91  DOWN           172.22.0.1/16 
+br-f02bc83022cc  DOWN           172.23.0.1/16 
+br-f0f698709bfa  UP             172.26.0.1/16 fe80::c0a2:68ff:fe8f:5987/64 
+br-a0de4d8bc0fb  UP             172.21.0.1/16 fe80::b06a:5dff:fe65:1ffb/64 
+br-feb362a15c2c  DOWN           172.20.0.1/16 
+veth0c08ef6@if2  UP             fe80::9835:a0ff:fe8a:e8f0/64 
+vethbfddd05@if2  UP             fe80::bc5d:a5ff:feef:529f/64 
+veth7e3d891@if2  UP             fe80::b04c:24ff:fe51:bb6f/64 
+veth0248045@if2  UP             fe80::a04c:67ff:fe80:4bb6/64 
+veth171fd64@if2  UP             fe80::1ca8:6fff:fe52:6ca9/64 
+
+=== ROUTES ===
+default via 10.0.2.2 dev enp0s3 proto dhcp src 10.0.2.15 metric 100 
+10.0.2.0/24 dev enp0s3 proto kernel scope link src 10.0.2.15 metric 100 
+10.0.2.2 dev enp0s3 proto dhcp scope link src 10.0.2.15 metric 100 
+172.17.0.0/16 dev docker0 proto kernel scope link src 172.17.0.1 linkdown 
+172.18.0.0/16 dev br-6334de7fd516 proto kernel scope link src 172.18.0.1 linkdown 
+172.19.0.0/16 dev br-5719439af595 proto kernel scope link src 172.19.0.1 
+172.20.0.0/16 dev br-feb362a15c2c proto kernel scope link src 172.20.0.1 linkdown 
+172.21.0.0/16 dev br-a0de4d8bc0fb proto kernel scope link src 172.21.0.1 
+172.22.0.0/16 dev br-bb3a1a505a91 proto kernel scope link src 172.22.0.1 linkdown 
+172.23.0.0/16 dev br-f02bc83022cc proto kernel scope link src 172.23.0.1 linkdown 
+172.24.0.0/16 dev br-888d71345d38 proto kernel scope link src 172.24.0.1 linkdown 
+172.25.0.0/16 dev br-5e1126a58415 proto kernel scope link src 172.25.0.1 linkdown 
+172.26.0.0/16 dev br-f0f698709bfa proto kernel scope link src 172.26.0.1 
+192.168.0.1 via 10.0.2.2 dev enp0s3 proto dhcp src 10.0.2.15 metric 100 
+192.168.56.0/24 dev enp0s8 proto kernel scope link src 192.168.56.20 

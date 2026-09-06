@@ -1,0 +1,102 @@
+3-  More info at: https://documentation.wazuh.com
+4-  Mailing list: https://groups.google.com/forum/#!forum/wazuh
+5--->
+6-
+7-<ossec_config>
+8:  <client>
+9-    <server>
+10-      <address>192.168.56.10</address>
+11-      <port>1514</port>
+12-      <protocol>tcp</protocol>
+13-    </server>
+14-    <config-profile>ubuntu, ubuntu22, ubuntu22.04</config-profile>
+15-    <notify_time>20</notify_time>
+16-    <time-reconnect>60</time-reconnect>
+17-    <auto_restart>yes</auto_restart>
+18-    <crypto_method>aes</crypto_method>
+19-    <enrollment>
+20-      <enabled>yes</enabled>
+21-      <agent_name>vm2-billetaje</agent_name>
+22-      <authorization_pass_path>etc/authd.pass</authorization_pass_path>
+23-    </enrollment>
+24-  </client>
+25-
+26-  <client_buffer>
+27-    <!-- Agent buffer options -->
+28-    <disabled>no</disabled>
+--
+100-    <interval>12h</interval>
+101-    <skip_nfs>yes</skip_nfs>
+102-  </sca>
+103-
+104-  <!-- File integrity monitoring -->
+105:  <syscheck>
+106-    <disabled>no</disabled>
+107- 	<frequency>300</frequency>
+108- 	<directories check_all="yes" realtime="yes" report_changes="yes">/srv/ftp/contenidos</directories>
+109-  	<directories check_all="yes">/etc/vsftpd.conf</directories>
+110-  	<alert_new_files>yes</alert_new_files>
+111-  	<auto_ignore>no</auto_ignore>
+112-  </syscheck>
+113-
+114-  <!-- Log analysis -->
+115:  <localfile>
+116-    <log_format>command</log_format>
+117-    <command>df -P</command>
+118-    <frequency>360</frequency>
+119-  </localfile>
+120-
+121:  <localfile>
+122-    <log_format>full_command</log_format>
+123-    <command>netstat -tulpn | sed 's/\([[:alnum:]]\+\)\ \+[[:digit:]]\+\ \+[[:digit:]]\+\ \+\(.*\):\([[:digit:]]*\)\ \+\([0-9\.\:\*]\+\).\+\ \([[:digit:]]*\/[[:alnum:]\-]*\).*/\1 \2 == \3 == \4 \5/' | sort -k 4 -g | sed 's/ == \(.*\) ==/:\1/' | sed 1,2d</command>
+124-    <alias>netstat listening ports</alias>
+125-    <frequency>360</frequency>
+126-  </localfile>
+127-
+128:  <localfile>
+129-    <log_format>full_command</log_format>
+130-    <command>last -n 20</command>
+131-    <frequency>360</frequency>
+132-  </localfile>
+133-
+134-  <!-- Active response -->
+135-  <active-response>
+136-    <disabled>no</disabled>
+137-    <ca_store>etc/wpk_root.pem</ca_store>
+138-    <ca_verification>yes</ca_verification>
+139-  </active-response>
+140-
+141-  <!-- Choose between "plain", "json", or "plain,json" for the format of internal logs -->
+142-  <logging>
+143-    <log_format>plain</log_format>
+144-  </logging>
+145-
+146:  <localfile>
+147-    <log_format>json</log_format>
+148-    <location>/media/sf_zeek_logs/notice.log</location>
+149-  </localfile>
+150-
+151:  <localfile>
+152-    <log_format>json</log_format>
+153-    <location>/media/sf_logs/eve.json</location>
+154-  </localfile>
+155-
+156-</ossec_config>
+157-
+158-<ossec_config>
+159:  <localfile>
+160-    <log_format>journald</log_format>
+161-    <location>journald</location>
+162-  </localfile>
+163-
+164:  <localfile>
+165-    <log_format>syslog</log_format>
+166-    <location>/var/ossec/logs/active-responses.log</location>
+167-  </localfile>
+168-
+169:  <localfile>
+170-    <log_format>syslog</log_format>
+171-    <location>/var/log/dpkg.log</location>
+172-  </localfile>
+173-
+174-</ossec_config>

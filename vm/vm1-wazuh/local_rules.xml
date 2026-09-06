@@ -1,0 +1,178 @@
+<!-- Local rules -->
+
+<!-- Modify it at your will. -->
+<!-- Copyright (C) 2015, Wazuh Inc. -->
+
+<group name="local,syslog,sshd,tfg_ot_scenario,">
+
+  <rule id="100030" level="12">
+    <if_sid>5715</if_sid>
+    <time>8 pm - 7 am</time>
+    <description>Acceso SSH al servidor de billetaje fuera de horario laboral</description>
+    <group>authentication_success,after_hours,pci_dss_10.2.5,</group>
+  </rule>
+
+</group>
+
+<group name="honeypot,scada,conpot,ot_security,tfg_ot_scenario,">
+
+  <rule id="100010" level="12">
+    <decoded_as>conpot-modbus-connection</decoded_as>
+    <description>Interaccion Modbus con honeypot Conpot detectada desde $(srcip):$(srcport)</description>
+    <group>honeypot,scada,ot_security,modbus,</group>
+  </rule>
+
+  <rule id="100011" level="10">
+    <decoded_as>conpot-modbus-traffic</decoded_as>
+    <description>Trafico Modbus registrado por honeypot Conpot desde $(srcip)</description>
+    <group>honeypot,scada,ot_security,modbus,</group>
+  </rule>
+
+  <rule id="100012" level="8">
+    <decoded_as>conpot-modbus-error</decoded_as>
+    <description>Excepcion Modbus registrada por honeypot Conpot. Codigo: $(extra_data)</description>
+    <group>honeypot,scada,ot_security,modbus,</group>
+  </rule>
+
+</group>
+
+
+<group name="modbus,scada,zeek,tfg_ot_scenario,">
+
+  <!-- Regla base: cualquier evento JSON de Zeek con campo note (encadenan las hijas) -->
+  <rule id="100019" level="0">
+    <decoded_as>json</decoded_as>
+    <field name="note">^ModbusWhitelist::</field>
+    <description>Evento Zeek ModbusWhitelist (base)</description>
+  </rule>
+
+  <rule id="100020" level="13">
+    <if_sid>100019</if_sid>
+    <field name="note">UnauthorizedWrite</field>
+    <description>Escritura Modbus no autorizada en $(dst) ($(msg))</description>
+    <mitre><id>T0836</id></mitre>
+    <group>modbus,scada,ot_security,</group>
+  </rule>
+
+  <rule id="100021" level="12">
+    <if_sid>100019</if_sid>
+    <field name="note">UnauthorizedModbusPeer</field>
+    <description>Peticion Modbus desde interlocutor no autorizado ($(msg))</description>
+    <mitre><id>T0855</id></mitre>
+    <group>modbus,scada,ot_security,</group>
+  </rule>
+
+  <rule id="100022" level="10">
+    <if_sid>100019</if_sid>
+    <field name="note">UnauthorizedRead</field>
+    <description>Lectura Modbus a tabla/equipo no expuesto ($(msg))</description>
+    <mitre><id>T0861</id></mitre>
+    <group>modbus,scada,ot_security,</group>
+  </rule>
+
+</group>
+
+
+<!-- ================================================================ -->
+<!--  local_rules.xml — Casos 5b, 6 y 7 (detección de red, Suricata)  -->
+<!--  Ingestan las alertas de Suricata por prefijo de firma            -->
+<!--  (OT-DPI / OT-SCAN / OT-SSH): así una nueva regla Suricata con el -->
+<!--  mismo prefijo se clasifica automáticamente, sin tocar Wazuh.     -->
+<!--  Nota: si la integración de eve.json anida los campos bajo        -->
+<!--  "data." (como en el Caso 3), prefije los <field> con "data.".    -->
+<!-- ================================================================ -->
+
+<group name="ot_dpi,">
+
+  <rule id="100050" level="10">
+    <if_sid>86601</if_sid>
+    <field name="alert.signature">^OT-DPI</field>
+    <description>DPI: discordancia protocolo/puerto o trafico ofuscado detectado en la red.</description>
+    <mitre>
+      <id>T1572</id>
+      <id>T1071</id>
+    </mitre>
+    <group>ot_dpi,attack,tfg_ot_scenario,</group>
+  </rule>
+
+</group>
+
+<group name="recon,">
+
+  <rule id="100060" level="10">
+    <if_sid>86601</if_sid>
+    <field name="alert.signature">^OT-SCAN</field>
+    <description>Escaneo de activos/servicios detectado en la red.</description>
+    <mitre>
+      <id>T1595</id>
+      <id>T1046</id>
+    </mitre>
+    <group>recon,attack,tfg_ot_scenario,</group>
+  </rule>
+
+</group>
+
+<group name="ot_ssh,">
+
+  <rule id="100070" level="10">
+    <if_sid>86601</if_sid>
+    <field name="alert.signature">^OT-SSH</field>
+    <description>Patron de fuerza bruta SSH detectado en la red.</description>
+    <mitre>
+      <id>T1110</id>
+    </mitre>
+    <group>authentication_failures,attack,tfg_ot_scenario,</group>
+  </rule>
+
+  <rule id="100071" level="13">
+    <if_sid>100070</if_sid>
+    <time>8 pm - 7 am</time>
+    <description>Fuerza bruta SSH en horario no operativo (criticidad elevada).</description>
+    <mitre>
+      <id>T1110</id>
+    </mitre>
+    <group>authentication_failures,attack,tfg_ot_scenario,</group>
+  </rule>
+
+</group>
+
+<group name="suricata,ids,lateral_movement,tfg_ot_scenario,">
+
+  <!-- Cuelgan de la regla de fabrica 86601 (Suricata alert). Sin base propia. -->
+
+  <!-- 9000002 - SMB (445) -->
+  <rule id="100041" level="12">
+    <if_sid>86601</if_sid>
+    <field name="alert.signature_id">^9000002$</field>
+    <description>Caso 3 - Movimiento lateral SMB de ofimatica a SCADA: $(src_ip) -> $(dest_ip):445</description>
+    <mitre><id>T1021.002</id></mitre>
+    <group>lateral_movement,ot_security,pci_dss_1.2.1,</group>
+  </rule>
+
+  <!-- 9000003 - SQL Server (1433) -->
+  <rule id="100042" level="12">
+    <if_sid>86601</if_sid>
+    <field name="alert.signature_id">^9000003$</field>
+    <description>Caso 3 - Movimiento lateral SQL Server de ofimatica a SCADA: $(src_ip) -> $(dest_ip):1433</description>
+    <mitre><id>T1021</id></mitre>
+    <group>lateral_movement,ot_security,pci_dss_1.2.1,</group>
+  </rule>
+
+  <!-- 9000004 - Modbus TCP (502): cruce IT->OT, el mas grave -->
+  <rule id="100043" level="13">
+    <if_sid>86601</if_sid>
+    <field name="alert.signature_id">^9000004$</field>
+    <description>Caso 3 - Acceso Modbus directo de ofimatica a SCADA: $(src_ip) -> $(dest_ip):502</description>
+    <group>lateral_movement,ot_security,modbus,pci_dss_1.2.1,</group>
+  </rule>
+
+  <!-- 9000005 - RDP (3389) -->
+  <rule id="100044" level="12">
+    <if_sid>86601</if_sid>
+    <field name="alert.signature_id">^9000005$</field>
+    <description>Caso 3 - Movimiento lateral RDP de ofimatica a SCADA: $(src_ip) -> $(dest_ip):3389</description>
+    <mitre><id>T1021.001</id></mitre>
+    <group>lateral_movement,ot_security,pci_dss_1.2.1,</group>
+  </rule>
+
+</group>

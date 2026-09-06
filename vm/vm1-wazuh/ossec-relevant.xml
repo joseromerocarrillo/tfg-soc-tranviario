@@ -1,0 +1,22 @@
+<!-- Fragmentos relevantes de /var/ossec/etc/ossec.conf utilizados en el laboratorio -->
+
+<global>
+  <jsonout_output>yes</jsonout_output>
+  <alerts_log>yes</alerts_log>
+  <logall>yes</logall>
+  <logall_json>yes</logall_json>
+</global>
+
+<remote>
+  <connection>secure</connection>
+  <port>1514</port>
+  <protocol>tcp</protocol>
+</remote>
+
+<remote>
+  <connection>syslog</connection>
+  <port>514</port>
+  <protocol>udp</protocol>
+  <allowed-ips>192.168.56.20/24</allowed-ips>
+  <local_ip>192.168.56.10</local_ip>
+</remote>
